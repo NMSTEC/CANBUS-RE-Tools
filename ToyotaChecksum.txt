@@ -1,0 +1,30 @@
+Toyota Checksum standard on internet is wrong.
+
+Note all values in here are in HEX. Not DEC.
+
+Correct checksum calculation:
+Example 1.
+0x320 - 0x80 0x20 0x00 0x00 0x00 0x00 0xCA DLC 7.
+320 + 80 + 20 = 3C0
+3C0 + DLC 7 (0x07) = 3C7
+Take MSB of 0x320 = 0x03
+03 + 3C7 = 3CA
+Take LSB of result, and thats your checksum (LSB  of 0x3CA is 0xCA)
+0xCA = B6 in above example.
+
+
+Example 2.
+0x0b4 - 0x00 0x00 0x00 0x00 0x61 0x01 0x66 0x84 DLC 8
+B4 + 61 + 01 + 66  = 17C
+17C + DLC 8 (0x08) = 184
+MSB of 0b4 = 0x00
+184 + 0 = 184
+Take LSB of result, and thats your checksum (LSB of 0x184 is 0x84)
+0x84 = B7 in above example.
+
+To summarize:
+
+
+Add up all bytes of message, except for the last one, as its the checksum. Take the total and add the address value, as well as the DLC (DLC is data length, or how many bytes of data in the packet). 
+From the address, add the MSB (First byte) to the previous result. (Example: if address is 0x694, you'd add 0x06 to 0x94).
+From the last result, take the last byte, and thats your checksum. 
